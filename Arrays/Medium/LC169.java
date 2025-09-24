@@ -19,6 +19,7 @@
  * We need to find the element that occurs more than n/2 times. Since it appears more than
  * half the time, it will always be the most frequent element and will survive cancellation
  * with other elements.
+ * Remember this problem uses "Boyer-Moore Voting Algorithm"
  *
  * BRUTE FORCE APPROACH:
  * - Count frequency of each element using nested loops
@@ -78,18 +79,22 @@ class Solution {
      * - Since majority > n/2, it will survive the cancellation process
      * - The algorithm implements this cancellation conceptually
      */
-    public int majorityElement(int[] nums) {
-        int candidate = nums[0];
-        int count = 0;
-
-        for (int num : nums) {
-            if (count == 0) {
-                candidate = num;
+    class Solution {
+        public int majorityElement(int[] nums) {
+            int candidates = nums[0];
+            int count = 1;
+            for(int i = 1; i < nums.length; i++){
+                if(count == 0){
+                    candidates = nums[i];
+                }
+                if(nums[i] == candidates){
+                    count++;
+                }else{
+                    count--;
+                }
             }
-            count += (num == candidate) ? 1 : -1;
+            return candidates;
         }
-
-        return candidate;
     }
 
     /**
@@ -196,11 +201,4 @@ class Solution {
  * Brute Force:
  * - Time: O(n²), Space: O(1) - Only for small inputs
  * - Demonstrates basic understanding but not practical
- *
- * INTERVIEW TIPS:
- * 1. Start with brute force to show understanding
- * 2. Mention Hash Map approach as improvement
- * 3. Introduce Boyer-Moore as optimal solution
- * 4. Explain why Boyer-Moore works (cancellation principle)
- * 5. Discuss follow-ups if majority element may not exist
  */
